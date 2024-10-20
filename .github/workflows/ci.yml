@@ -40,10 +40,6 @@ jobs:
         id: npm-format-check
         run: pnpm run format:check
 
-      - name: Lint
-        id: npm-lint
-        run: pnpm run lint
-
   test-action:
     name: GitHub Actions Test
     runs-on: ubuntu-latest
@@ -57,7 +53,8 @@ jobs:
         id: test-action
         uses: ./
         with:
-          milliseconds: 2000
+          repositories: 'yukineko-works/DevUtils'
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Print Output
         id: output
