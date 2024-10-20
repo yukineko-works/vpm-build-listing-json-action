@@ -1,7 +1,7 @@
 {
   "name": "vpm-build-listing-json-action",
   "description": "VPM Listing json builder",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "author": "yukineko",
   "private": true,
   "homepage": "https://github.com/yukineko-works/vpm-build-listing-json-action",
