@@ -20,7 +20,7 @@ export async function build(): Promise<void> {
     let packageCache: PackageCache = {}
 
     if (!disableCache && !fs.existsSync(cacheFileName)) {
-        cache.restoreCache([cacheFileName], cacheKey)
+        cache.restoreCache([cacheFileName], 'vpm-build-listing-json-dummy', [cacheKey])
 
         try {
             const cacheData = JSON.parse(fs.readFileSync(cacheFileName, 'utf8')) as PackageCache
@@ -90,18 +90,10 @@ export async function build(): Promise<void> {
     // #endregion
 
     // #region Save cache
-    if (!disableCache) {
-        if (cacheUpdated) {
-            core.info('Cache updated, deleting old cache')
-            await octokit.rest.actions.deleteActionsCacheByKey({
-                owner: github.context.repo.owner,
-                repo: github.context.repo.repo,
-                key: cacheKey,
-            })
-        }
-
+    if (!disableCache && cacheUpdated) {
+        core.info('Cache updated, saving cache')
         fs.writeFileSync(cacheFileName, JSON.stringify(packageCache))
-        cache.saveCache([cacheFileName], cacheKey)
+        cache.saveCache([cacheFileName], `${cacheKey}-${Date.now().toString(16)}`)
     }
     // #endregion
 
