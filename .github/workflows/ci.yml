@@ -58,4 +58,4 @@ jobs:
 
       - name: Print Output
         id: output
-        run: cat output.json
+        run: ls -lah
