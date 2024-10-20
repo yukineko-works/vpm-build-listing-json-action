@@ -69212,6 +69212,7 @@ const fetch = __importStar(__nccwpck_require__(9432));
 async function build() {
     const packages = {};
     // #region Load cache
+    let cacheUpdated = false;
     const disableCache = core.getBooleanInput('disable-cache');
     const cacheKey = core.getInput('cache-key') || 'cache-vpm-build-listing-json';
     const cacheFileName = 'vpm-build-listing-cache.json';
@@ -69266,6 +69267,7 @@ async function build() {
                 artifact.url = zipUrl;
                 artifact.zipSHA256 = zipSHA256;
                 packageCache[cacheKey] = artifact;
+                cacheUpdated = true;
             }
             if (!(artifact.name in packages)) {
                 packages[artifact.name] = {
@@ -69278,6 +69280,14 @@ async function build() {
     // #endregion
     // #region Save cache
     if (!disableCache) {
+        if (cacheUpdated) {
+            core.info('Cache updated, deleting old cache');
+            await octokit.rest.actions.deleteActionsCacheByKey({
+                owner: github.context.repo.owner,
+                repo: github.context.repo.repo,
+                key: cacheKey,
+            });
+        }
         fs_1.default.writeFileSync(cacheFileName, JSON.stringify(packageCache));
         cache.saveCache([cacheFileName], cacheKey);
     }
