@@ -12,6 +12,7 @@ export async function build(): Promise<void> {
     const packages = {} as VPMTypes.VRCPackages['packages']
 
     // #region Load cache
+    let cacheUpdated = false
     const disableCache = core.getBooleanInput('disable-cache')
     const cacheKey = core.getInput('cache-key') || 'cache-vpm-build-listing-json'
     const cacheFileName = 'vpm-build-listing-cache.json'
@@ -74,6 +75,7 @@ export async function build(): Promise<void> {
                 artifact.zipSHA256 = zipSHA256
 
                 packageCache[cacheKey] = artifact
+                cacheUpdated = true
             }
 
             if (!(artifact.name in packages)) {
@@ -89,6 +91,15 @@ export async function build(): Promise<void> {
 
     // #region Save cache
     if (!disableCache) {
+        if (cacheUpdated) {
+            core.info('Cache updated, deleting old cache')
+            await octokit.rest.actions.deleteActionsCacheByKey({
+                owner: github.context.repo.owner,
+                repo: github.context.repo.repo,
+                key: cacheKey,
+            })
+        }
+
         fs.writeFileSync(cacheFileName, JSON.stringify(packageCache))
         cache.saveCache([cacheFileName], cacheKey)
     }
