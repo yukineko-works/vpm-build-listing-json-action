@@ -69408,7 +69408,7 @@ function getListingConfig() {
         repositories: {},
     };
     let repos = core.getInput('repositories').split('\n');
-    if (sourceJson != null) {
+    if (sourceJson) {
         if (fs_1.default.existsSync(sourceJson)) {
             try {
                 const sourceData = JSON.parse(fs_1.default.readFileSync(sourceJson, 'utf8'));
