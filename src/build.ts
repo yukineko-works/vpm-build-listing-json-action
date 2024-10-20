@@ -39,7 +39,10 @@ export async function build(): Promise<void> {
     const listingConfig = listing.getListingConfig()
 
     for (const repo of listingConfig.repositories) {
-        const releases = await octokit.paginate(octokit.rest.repos.listReleases, { owner: repo.owner, repo: repo.repoName })
+        const releases = await octokit.paginate(octokit.rest.repos.listReleases, {
+            owner: repo.owner,
+            repo: repo.repoName,
+        })
         for (const release of releases) {
             if (release.draft) continue
 

@@ -12,7 +12,7 @@ export function getListingConfig() {
             url: core.getInput('author-url'),
             email: core.getInput('author-email'),
         },
-        repositories: {} as { owner: string, repoName: string }[],
+        repositories: {} as { owner: string; repoName: string }[],
     }
 
     let repos = core.getInput('repositories').split('\n')
@@ -39,17 +39,19 @@ export function getListingConfig() {
     }
 
     // repositories format check
-    config.repositories = repos.map((repo) => {
-        const split = repo.split('/')
-        if (split.length !== 2) {
-            core.warning(`Invalid repository format: ${repo}`)
-            return null
-        }
-        return {
-            owner: split[0],
-            repoName: split[1],
-        }
-    }).filter((repo) => repo != null)
+    config.repositories = repos
+        .map(repo => {
+            const split = repo.split('/')
+            if (split.length !== 2) {
+                core.warning(`Invalid repository format: ${repo}`)
+                return null
+            }
+            return {
+                owner: split[0],
+                repoName: split[1],
+            }
+        })
+        .filter(repo => repo != null)
 
     return config
 }

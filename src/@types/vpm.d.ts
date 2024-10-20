@@ -1,34 +1,34 @@
 export type VRCPackages = {
-    name: string,
+    name: string
     author: {
-        name: string,
-        email: string,
-        url?: string,
-    },
-    url: string,
-    id: string,
-    packages: Record<string, VRCPackage>,
+        name: string
+        email: string
+        url?: string
+    }
+    url: string
+    id: string
+    packages: Record<string, VRCPackage>
 }
 
 export type VRCPackage = {
-    versions: Record<string, Artifact>,
+    versions: Record<string, Artifact>
 }
 
 export type Artifact = {
-    name: string,
-    displayName: string,
-    version: string,
-    description: string,
-    gitDependencies?: Record<string, string>,
-    vpmDependencies?: Record<string, string>,
+    name: string
+    displayName: string
+    version: string
+    description: string
+    gitDependencies?: Record<string, string>
+    vpmDependencies?: Record<string, string>
     author: {
-        name: string,
-        email: string,
-        url?: string,
-    },
-    zipSHA256: string,
-    url: string,
-    legacyFolders: Record<string, string>,
-    legacyFiles: Record<string, string>,
-    unity?: string,
+        name: string
+        email: string
+        url?: string
+    }
+    zipSHA256: string
+    url: string
+    legacyFolders: Record<string, string>
+    legacyFiles: Record<string, string>
+    unity?: string
 }
