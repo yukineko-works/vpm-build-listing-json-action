@@ -1,25 +1,22 @@
 {
-  "name": "typescript-action",
-  "description": "GitHub Actions TypeScript template",
+  "name": "vpm-build-listing-json-action",
+  "description": "VPM Listing json builder",
   "version": "0.0.0",
-  "author": "",
+  "author": "yukineko",
   "private": true,
-  "homepage": "https://github.com/actions/typescript-action",
+  "homepage": "https://github.com/yukineko-works/vpm-build-listing-json-action",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/actions/typescript-action.git"
+    "url": "git+https://github.com/yukineko-works/vpm-build-listing-json-action.git"
   },
   "bugs": {
-    "url": "https://github.com/actions/typescript-action/issues"
+    "url": "https://github.com/yukineko-works/vpm-build-listing-json-action/issues"
   },
-  "keywords": [
-    "actions",
-    "node",
-    "setup"
-  ],
+  "keywords": [],
   "exports": {
     ".": "./dist/index.js"
   },
+  "packageManager": "pnpm@9.1.0",
   "engines": {
     "node": ">=21"
   },
