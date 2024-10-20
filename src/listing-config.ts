@@ -17,7 +17,7 @@ export function getListingConfig() {
 
     let repos = core.getInput('repositories').split('\n')
 
-    if (sourceJson != null) {
+    if (sourceJson) {
         if (fs.existsSync(sourceJson)) {
             try {
                 const sourceData = JSON.parse(fs.readFileSync(sourceJson, 'utf8'))
