@@ -69398,16 +69398,12 @@ exports.getListingConfig = getListingConfig;
 const fs_1 = __importDefault(__nccwpck_require__(9896));
 const core = __importStar(__nccwpck_require__(4708));
 function getListingConfig() {
-    const sourceJson = core.getInput('source-json-path');
+    const sourceJson = core.getInput('source');
     const config = {
         name: core.getInput('name'),
         id: core.getInput('id'),
         url: core.getInput('url'),
-        author: {
-            name: core.getInput('author-name'),
-            url: core.getInput('author-url'),
-            email: core.getInput('author-email'),
-        },
+        author: core.getInput('author'),
         repositories: {},
     };
     let repos = core.getInput('repositories').split('\n');
@@ -69418,9 +69414,7 @@ function getListingConfig() {
                 config.name = sourceData?.name ?? config.name;
                 config.id = sourceData?.id ?? config.id;
                 config.url = sourceData?.url ?? config.url;
-                config.author.name = sourceData?.author?.name ?? config.author.name;
-                config.author.url = sourceData?.author?.url ?? config.author.url;
-                config.author.email = sourceData?.author?.email ?? config.author.email;
+                config.author = sourceData?.author?.name ?? config.author;
                 repos = sourceData?.githubRepos ?? repos;
             }
             catch (error) {
