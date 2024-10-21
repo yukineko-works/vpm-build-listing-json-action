@@ -2,16 +2,12 @@ import fs from 'fs'
 import * as core from '@actions/core'
 
 export function getListingConfig() {
-    const sourceJson = core.getInput('source-json-path')
+    const sourceJson = core.getInput('source')
     const config = {
         name: core.getInput('name'),
         id: core.getInput('id'),
         url: core.getInput('url'),
-        author: {
-            name: core.getInput('author-name'),
-            url: core.getInput('author-url'),
-            email: core.getInput('author-email'),
-        },
+        author: core.getInput('author'),
         repositories: {} as { owner: string; repoName: string }[],
     }
 
@@ -24,9 +20,7 @@ export function getListingConfig() {
                 config.name = sourceData?.name ?? config.name
                 config.id = sourceData?.id ?? config.id
                 config.url = sourceData?.url ?? config.url
-                config.author.name = sourceData?.author?.name ?? config.author.name
-                config.author.url = sourceData?.author?.url ?? config.author.url
-                config.author.email = sourceData?.author?.email ?? config.author.email
+                config.author = sourceData?.author?.name ?? config.author
                 repos = sourceData?.githubRepos ?? repos
             } catch (error) {
                 if (error instanceof Error) {

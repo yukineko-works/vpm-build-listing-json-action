@@ -1,10 +1,6 @@
 export type VRCPackages = {
     name: string
-    author: {
-        name: string
-        email: string
-        url?: string
-    }
+    author: string
     url: string
     id: string
     packages: Record<string, VRCPackage>

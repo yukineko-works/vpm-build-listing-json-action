@@ -19,24 +19,16 @@ inputs:
     description: url of vpm repository's json file
     default: https://example.com/index.json
     required: false
-  author-name:
+  author:
     description: author name of vpm repository
     default: unknown
-    required: false
-  author-email:
-    description: author email of vpm repository
-    default: ''
-    required: false
-  author-url:
-    description: author url of vpm repository
-    default: ''
     required: false
   repositories:
     description: repositories (packages) to include in the listing
     default: ''
     required: false
-  source-json-path:
-    description: path to the source json file
+  source:
+    description: path to the source.json file
     default: ''
     required: false
   output:
