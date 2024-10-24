@@ -69204,6 +69204,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.build = build;
 const fs_1 = __importDefault(__nccwpck_require__(9896));
+const crypto_1 = __importDefault(__nccwpck_require__(6982));
 const core = __importStar(__nccwpck_require__(4708));
 const github = __importStar(__nccwpck_require__(3802));
 const cache = __importStar(__nccwpck_require__(184));
@@ -69286,10 +69287,12 @@ async function build() {
     // #endregion
     // #region Save cache
     if (!disableCache && cacheUpdated) {
-        core.info('Cache updated, saving cache');
-        core.debug(`Cache: ${JSON.stringify(packageCache)}`);
-        fs_1.default.writeFileSync(cacheFileName, JSON.stringify(packageCache));
-        await cache.saveCache([cacheFileName], `${cacheKey}-${Date.now().toString(16)}`);
+        const stringifiedCache = JSON.stringify(packageCache);
+        core.info(`Cache updated, saving ${Object.keys(packageCache).length} artifact(s).`);
+        core.debug(`Cache: ${stringifiedCache}`);
+        fs_1.default.writeFileSync(cacheFileName, stringifiedCache);
+        const cacheHash = crypto_1.default.createHash('sha256').update(stringifiedCache).digest('hex');
+        await cache.saveCache([cacheFileName], `${cacheKey}-${cacheHash}`);
     }
     // #endregion
     // #region Write packages
