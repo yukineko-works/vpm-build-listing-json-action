@@ -23,7 +23,7 @@ jobs:
         uses: actions/checkout@v4
 
 +      - name: Build Listing JSON
-+        uses: yukineko-works/vpm-build-listing-json-action@v1.1.0
++        uses: yukineko-works/vpm-build-listing-json-action@v1.1.1
 +        with:
 +          source: source.json
 +          token: ${{ secrets.GITHUB_TOKEN }}
@@ -35,7 +35,7 @@ Place the [json format used in the official PackageListing](https://github.com/v
 Specify the property `source`.  
 ```diff
     - name: Build Listing JSON
-      uses: yukineko-works/vpm-build-listing-json-action@v1.1.0
+      uses: yukineko-works/vpm-build-listing-json-action@v1.1.1
       with:
 +       source: source.json
         token: ${{ secrets.GITHUB_TOKEN }}
@@ -46,7 +46,7 @@ Specify the necessary information directly in the workflow.
 Specify the properties `name`, `id`, `url`, `author`, `repositories`.  
 ```diff
     - name: Build Listing JSON
-      uses: yukineko-works/vpm-build-listing-json-action@v1.1.0
+      uses: yukineko-works/vpm-build-listing-json-action@v1.1.1
       with:
 +       name: example vpm repository
 +       id: com.example.vpm-repository
