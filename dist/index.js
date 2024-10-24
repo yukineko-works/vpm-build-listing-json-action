@@ -69217,9 +69217,11 @@ async function build() {
     const cacheKey = core.getInput('cache-key') || 'cache-vpm-build-listing-json';
     const cacheFileName = 'vpm-build-listing-cache.json';
     let packageCache = {};
-    if (!disableCache && fs_1.default.existsSync(cacheFileName)) {
+    if (!disableCache) {
         cache.restoreCache([cacheFileName], 'vpm-build-listing-json-dummy', [cacheKey]);
         try {
+            if (!fs_1.default.existsSync(cacheFileName))
+                throw new Error('Cache file does not exist');
             const cacheData = JSON.parse(fs_1.default.readFileSync(cacheFileName, 'utf8'));
             packageCache = cacheData;
             core.info(`Loaded ${Object.keys(packageCache).length} artifact(s) from cache`);
