@@ -69217,7 +69217,7 @@ async function build() {
     const cacheKey = core.getInput('cache-key') || 'cache-vpm-build-listing-json';
     const cacheFileName = 'vpm-build-listing-cache.json';
     let packageCache = {};
-    if (!disableCache && !fs_1.default.existsSync(cacheFileName)) {
+    if (!disableCache && fs_1.default.existsSync(cacheFileName)) {
         cache.restoreCache([cacheFileName], 'vpm-build-listing-json-dummy', [cacheKey]);
         try {
             const cacheData = JSON.parse(fs_1.default.readFileSync(cacheFileName, 'utf8'));
@@ -69226,7 +69226,7 @@ async function build() {
             core.debug(`Cache: ${JSON.stringify(packageCache)}`);
         }
         catch (error) {
-            if (error instanceof Error && !('code' in error && error.code === 'ENOENT')) {
+            if (error instanceof Error) {
                 core.warning(`Failed to load cache file: ${error.message}`);
             }
         }
