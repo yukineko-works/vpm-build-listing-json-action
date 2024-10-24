@@ -1,4 +1,5 @@
 import fs from 'fs'
+import crypto from 'crypto'
 import * as core from '@actions/core'
 import * as github from '@actions/github'
 import * as cache from '@actions/cache'
@@ -96,10 +97,14 @@ export async function build(): Promise<void> {
 
     // #region Save cache
     if (!disableCache && cacheUpdated) {
-        core.info('Cache updated, saving cache')
-        core.debug(`Cache: ${JSON.stringify(packageCache)}`)
-        fs.writeFileSync(cacheFileName, JSON.stringify(packageCache))
-        await cache.saveCache([cacheFileName], `${cacheKey}-${Date.now().toString(16)}`)
+        const stringifiedCache = JSON.stringify(packageCache)
+
+        core.info(`Cache updated, saving ${Object.keys(packageCache).length} artifact(s).`)
+        core.debug(`Cache: ${stringifiedCache}`)
+        fs.writeFileSync(cacheFileName, stringifiedCache)
+
+        const cacheHash = crypto.createHash('sha256').update(stringifiedCache).digest('hex')
+        await cache.saveCache([cacheFileName], `${cacheKey}-${cacheHash}`)
     }
     // #endregion
 
