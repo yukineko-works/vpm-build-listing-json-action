@@ -20,7 +20,7 @@ export async function build(): Promise<void> {
     let packageCache: PackageCache = {}
 
     if (!disableCache) {
-        cache.restoreCache([cacheFileName], 'vpm-build-listing-json-dummy', [cacheKey])
+        await cache.restoreCache([cacheFileName], 'vpm-build-listing-json-dummy', [cacheKey])
 
         try {
             if (!fs.existsSync(cacheFileName)) throw new Error('Cache file does not exist')
@@ -99,7 +99,7 @@ export async function build(): Promise<void> {
         core.info('Cache updated, saving cache')
         core.debug(`Cache: ${JSON.stringify(packageCache)}`)
         fs.writeFileSync(cacheFileName, JSON.stringify(packageCache))
-        cache.saveCache([cacheFileName], `${cacheKey}-${Date.now().toString(16)}`)
+        await cache.saveCache([cacheFileName], `${cacheKey}-${Date.now().toString(16)}`)
     }
     // #endregion
 
