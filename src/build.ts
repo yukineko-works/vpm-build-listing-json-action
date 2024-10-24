@@ -25,6 +25,9 @@ export async function build(): Promise<void> {
         try {
             const cacheData = JSON.parse(fs.readFileSync(cacheFileName, 'utf8')) as PackageCache
             packageCache = cacheData
+
+            core.info(`Loaded ${Object.keys(packageCache).length} artifact(s) from cache`)
+            core.debug(`Cache: ${JSON.stringify(packageCache)}`)
         } catch (error) {
             if (error instanceof Error && !('code' in error && error.code === 'ENOENT')) {
                 core.warning(`Failed to load cache file: ${error.message}`)
@@ -51,12 +54,12 @@ export async function build(): Promise<void> {
 
             const cacheKey = `${repo.owner}/${repo.repoName}/${release.tag_name}`
             if (cacheKey in packageCache) {
-                core.debug(`Skipping ${repo.owner}/${repo.repoName}/${release.tag_name} as it is already cached`)
+                core.debug(`Skipping ${cacheKey} as it is already cached`)
                 artifact = packageCache[cacheKey]
             } else {
                 const packageAsset = release.assets.find(asset => asset.name === 'package.json')
                 if (!packageAsset) {
-                    core.warning(`Failed to find package.json for ${repo.owner}/${repo.repoName}/${release.tag_name}`)
+                    core.warning(`Failed to find package.json for ${cacheKey}`)
                     continue
                 }
 
@@ -64,7 +67,7 @@ export async function build(): Promise<void> {
 
                 const zipAsset = release.assets.find(asset => asset.name.endsWith('.zip'))
                 if (!zipAsset) {
-                    core.warning(`Failed to find zip asset for ${repo.owner}/${repo.repoName}/${release.tag_name}`)
+                    core.warning(`Failed to find zip asset for ${cacheKey}`)
                     continue
                 }
 
@@ -74,6 +77,7 @@ export async function build(): Promise<void> {
                 artifact.url = zipUrl
                 artifact.zipSHA256 = zipSHA256
 
+                if (!disableCache) core.info(`Caching ${cacheKey}`)
                 packageCache[cacheKey] = artifact
                 cacheUpdated = true
             }
@@ -92,6 +96,7 @@ export async function build(): Promise<void> {
     // #region Save cache
     if (!disableCache && cacheUpdated) {
         core.info('Cache updated, saving cache')
+        core.debug(`Cache: ${JSON.stringify(packageCache)}`)
         fs.writeFileSync(cacheFileName, JSON.stringify(packageCache))
         cache.saveCache([cacheFileName], `${cacheKey}-${Date.now().toString(16)}`)
     }
