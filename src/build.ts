@@ -19,10 +19,11 @@ export async function build(): Promise<void> {
 
     let packageCache: PackageCache = {}
 
-    if (!disableCache && fs.existsSync(cacheFileName)) {
+    if (!disableCache) {
         cache.restoreCache([cacheFileName], 'vpm-build-listing-json-dummy', [cacheKey])
 
         try {
+            if (!fs.existsSync(cacheFileName)) throw new Error('Cache file does not exist')
             const cacheData = JSON.parse(fs.readFileSync(cacheFileName, 'utf8')) as PackageCache
             packageCache = cacheData
 
