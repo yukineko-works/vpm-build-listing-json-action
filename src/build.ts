@@ -19,7 +19,7 @@ export async function build(): Promise<void> {
 
     let packageCache: PackageCache = {}
 
-    if (!disableCache && !fs.existsSync(cacheFileName)) {
+    if (!disableCache && fs.existsSync(cacheFileName)) {
         cache.restoreCache([cacheFileName], 'vpm-build-listing-json-dummy', [cacheKey])
 
         try {
@@ -29,7 +29,7 @@ export async function build(): Promise<void> {
             core.info(`Loaded ${Object.keys(packageCache).length} artifact(s) from cache`)
             core.debug(`Cache: ${JSON.stringify(packageCache)}`)
         } catch (error) {
-            if (error instanceof Error && !('code' in error && error.code === 'ENOENT')) {
+            if (error instanceof Error) {
                 core.warning(`Failed to load cache file: ${error.message}`)
             }
         }
